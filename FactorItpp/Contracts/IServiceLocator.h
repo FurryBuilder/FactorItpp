@@ -27,7 +27,7 @@
 #ifndef FURRYBUILDER_FACTORIT_I_SERVICE_LOCATOR
 #define FURRYBUILDER_FACTORIT_I_SERVICE_LOCATOR
 
-#include "Common.h"
+#include "../Common.h"
 
 #include <functional>
 #include <memory>

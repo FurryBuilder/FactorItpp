@@ -27,7 +27,7 @@
 #ifndef FURRYBUILDER_FACTORIT_I_BINDING_ROOT
 #define FURRYBUILDER_FACTORIT_I_BINDING_ROOT
 
-#include "Common.h"
+#include "../Common.h"
 
 #include <functional>
 #include <memory>
