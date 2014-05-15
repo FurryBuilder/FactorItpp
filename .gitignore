@@ -19,3 +19,11 @@
 *.exe
 *.out
 *.app
+*.sdf
+*.tmp
+*.user
+*.suo
+*.log
+*.tlog
+*.idb
+*.pdb
