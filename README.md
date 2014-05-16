@@ -17,7 +17,7 @@ Feature Compatibility List
 | Templated binding     | &#x2713; | &#x2713; |
 | Templated unbinding   |          | &#x2713; |
 | Templated resolving   | &#x2713; |    1     |
-| Service keys          | &#x2713; |          |
+| Service keys          | &#x2713; | &#x2713; |
 | Decorators            | &#x2713; |          |
 | Notifications         | &#x2713; |          |
 | Child containers      | &#x2713; |          |

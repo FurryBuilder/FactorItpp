@@ -53,10 +53,21 @@ namespace Contracts
 		virtual void UnregisterWeak(const std::string& key) abstract;
 
 		/// Unregister a service on the container using a type key.
+		/// @tparam	TContract	The key that will be use to unregister the contract.
 		template<typename TContract>
 		void Unregister()
 		{
-			UnregisterWeak(typeid(TContract).name());
+			UnregisterWeak(BuildKey<TContract>());
+		}
+
+		/// Unregister a service on the container using a type key and an
+		/// additional service name.
+		/// @tparam	TContract	The key that will be use to unregister the contract.
+		/// @param	key			The name of the service.
+		template<typename TContract>
+		void Unregister(const std::string& key)
+		{
+			UnregisterWeak(BuildKey<TContract>(key));
 		}
 	};
 }

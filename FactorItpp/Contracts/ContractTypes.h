@@ -63,6 +63,18 @@ namespace Contracts
 	{
 		typedef std::function<ContractWeak::type(IServiceLocator* l)> type;
 	};
+
+	template<typename TContract>
+	std::string BuildKey()
+	{
+		return typeid(TContract).name();
+	}
+
+	template<typename TContract>
+	std::string BuildKey(const std::string& key)
+	{
+		return typeid(TContract).name() + (" => " + key);
+	}
 }
 }
 }

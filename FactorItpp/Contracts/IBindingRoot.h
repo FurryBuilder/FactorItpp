@@ -60,7 +60,17 @@ namespace Contracts
 		template<typename TContract>
 		void Register(typename FactoryStrong<TContract>::type factory)
 		{
-			RegisterWeak(typeid(TContract).name(), static_cast<FactoryWeak::type>(factory));
+			RegisterWeak(BuildKey<TContract>(), static_cast<FactoryWeak::type>(factory));
+		}
+
+		/// Register a service on the container using a type key.
+		/// @tparam	TContract	The key that will be use to register the contract.
+		/// @param	key			The name of the service.
+		/// @param	factory		The factory used to instanciate the contract.
+		template<typename TContract>
+		void Register(const std::string& key, typename FactoryStrong<TContract>::type factory)
+		{
+			RegisterWeak(BuildKey<TContract>(key), static_cast<FactoryWeak::type>(factory));
 		}
 	};
 }

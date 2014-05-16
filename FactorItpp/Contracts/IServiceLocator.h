@@ -58,7 +58,16 @@ namespace Contracts
 		template<typename TContract>
 		typename ContractStrong<TContract>::type Resolve()
 		{
-			return std::static_pointer_cast<TContract>(ResolveWeak(typeid(TContract).name()));
+			return std::static_pointer_cast<TContract>(ResolveWeak(BuildKey<TContract>()));
+		}
+
+		/// Get the instance of the specified service.
+		/// @tparam	TContract	The key that will be use to register the contract.
+		/// @param	key			The name of the service.
+		template<typename TContract>
+		typename ContractStrong<TContract>::type Resolve(const std::string& key)
+		{
+			return std::static_pointer_cast<TContract>(ResolveWeak(BuildKey<TContract>(key)));
 		}
 	};
 }
