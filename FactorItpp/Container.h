@@ -49,6 +49,11 @@ namespace FactorIt
 		virtual void RegisterWeak(const std::string& key, Contracts::FactoryWeak::type factory) override;
 		virtual void UnregisterWeak(const std::string& key) override;
 		virtual Contracts::ContractWeak::type ResolveWeak(const std::string& key) override;
+		virtual Contracts::ContractWeak::type ResolveOrDefaultWeak(
+			const std::string& key,
+			std::function<Contracts::ContractWeak::type()> defaultValue = std::function<Contracts::ContractWeak::type()>()
+		) override;
+		virtual bool CanResolveWeak(const std::string& key) override;
 
 	private:
 		std::map<std::string, std::unique_ptr<Lazy<void>>> _contracts;

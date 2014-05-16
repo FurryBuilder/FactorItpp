@@ -30,7 +30,7 @@ using namespace FurryBuilder::FactorIt;
 
 void Container::RegisterWeak(const std::string& key, Contracts::FactoryWeak::type factory)
 {
-	if (_contracts.find(key) != _contracts.end())
+	if (CanResolveWeak(key))
 	{
 		throw std::runtime_error("Contract [" + key + "] is already registered");
 	}
@@ -58,4 +58,26 @@ Contracts::ContractWeak::type Container::ResolveWeak(const std::string& key)
 	}
 
 	return pos->second->GetValue();
+}
+
+Contracts::ContractWeak::type Container::ResolveOrDefaultWeak(std::string const& key, std::function<Contracts::ContractWeak::type()> defaultValue)
+{
+	auto pos = _contracts.find(key);
+
+	if (pos == _contracts.end())
+	{
+		if (defaultValue)
+		{
+			return defaultValue();
+		}
+
+		return Contracts::ContractWeak::type();
+	}
+
+	return pos->second->GetValue();
+}
+
+bool Container::CanResolveWeak(std::string const& key)
+{
+	return _contracts.find(key) != _contracts.end();
 }

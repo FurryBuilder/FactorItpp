@@ -16,13 +16,12 @@ Feature Compatibility List
 | Write-only interface  | &#x2713; | &#x2713; |
 | Templated binding     | &#x2713; | &#x2713; |
 | Templated unbinding   |          | &#x2713; |
-| Templated resolving   | &#x2713; |    1     |
+| Templated resolving   | &#x2713; | &#x2713; |
 | Service keys          | &#x2713; | &#x2713; |
 | Decorators            | &#x2713; |          |
 | Notifications         | &#x2713; |          |
 | Child containers      | &#x2713; |          |
 | Resolving scope       | &#x2713; |          |
-| Auto cleanup          | &#x2713; |    2     |
+| Auto cleanup          | &#x2713; |    1     |
 
-1. Partially supported. Missing query API: `CanResolve` and `ResolveOrDefault`.
-2. Partially supported. Service destructor will be called when shared_ptr dies.
+1. Partially supported. Service destructor will be called when shared_ptr dies.
