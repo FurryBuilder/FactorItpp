@@ -90,8 +90,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GivenEmptyContainer.cpp" />
+    <ClCompile Include="GivenKeyedContainer.cpp" />
     <ClCompile Include="GivenKeylessContainer.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Stubs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

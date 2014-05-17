@@ -1,26 +1,10 @@
 #include <bandit/bandit.h>
 
 #include "Container.h"
+#include "Stubs.h"
 
 using namespace bandit;
 using namespace FurryBuilder::FactorIt;
-
-namespace Stubs
-{
-	class IStubService
-	{
-		INTERFACE(IStubService)
-	};
-
-	class StubService : public IStubService
-	{
-		DISABLE_COPY(StubService);
-
-	public:
-		StubService() { }
-		virtual ~StubService() { }
-	};
-}
 
 go_bandit([]()
 {
@@ -37,12 +21,27 @@ go_bandit([]()
 
 		it("can check for resolving non-existing services", [&]()
 		{
-			AssertThat(_container.CanResolveWeak(""), Equals(false));
+			AssertThat(_container.CanResolve<Contracts::IServiceLocator>(), Equals(false));
 		});
 
-		it("cannot resolve", [&]()
+		it("can resolve existing services", [&]()
 		{
-			AssertThrows(std::runtime_error, _container.ResolveWeak(""));
+			auto s = _container.Resolve<Stubs::IStubService>();
+
+			AssertThat((bool)s, Equals(true));
+		});
+
+		it("cannot resolve non-existing services", [&]()
+		{
+			AssertThrows(std::runtime_error, _container.Resolve<Contracts::IServiceLocator>());
+		});
+
+		it("can resolve existing services twice to the same instance", [&]()
+		{
+			auto s1 = _container.Resolve<Stubs::IStubService>();
+			auto s2 = _container.Resolve<Stubs::IStubService>();
+
+			AssertThat(s1.get(), Equals(s2.get()));
 		});
 	});
 });
