@@ -1,0 +1,3 @@
+[submodule "Pacakges/bandit"]
+	path = Pacakges/bandit
+	url = https://github.com/joakimkarlsson/bandit.git
