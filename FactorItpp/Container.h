@@ -40,6 +40,8 @@ namespace FactorIt
 	/// A simple dependency injection container.
 	class Container : public Contracts::IContainer
 	{
+		DISABLE_COPY(Container)
+
 	public:
 		Container() { }
 

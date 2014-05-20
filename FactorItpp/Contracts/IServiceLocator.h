@@ -40,27 +40,35 @@ namespace FactorIt
 {
 namespace Contracts
 {
+	namespace {
+		class IServiceLocatorWeak
+		{
+			INTERFACE(IServiceLocatorWeak)
+
+			/// Get the instance of the specified service.
+			/// @param	key		The key used to register the contract.
+			virtual ContractWeak::type ResolveWeak(const std::string& key) abstract;
+
+			/// Get the instance of the specified service. Returns a null value if the
+			/// service is not registered.
+			/// @param	key		The key used to register the contract.
+			virtual ContractWeak::type ResolveOrDefaultWeak(const std::string& key, std::function<ContractWeak::type()> defaultValue = std::function<ContractWeak::type()>()) abstract;
+
+			/// Check if a contract has been registered.
+			/// @param	key		The key used to register the contract.
+			virtual bool CanResolveWeak(const std::string& key) abstract;
+		};
+	}
+
 	/// Represent an object that can resolve services registered on a dependency
 	/// injection container.
-	/// @note	This interface also provides a strongly typed templated automatic
-	///			override that should be used externally. Consider the Weak method
-	///			variant as internal methods.
-	class IServiceLocator
+	/// @note	Unfortunately, there seems to be no way of emulating extension methods that
+	///			can properly handle template parameters. For this reason, this interface
+	///			should contain all "extension methods" for its base interface. This is ugly
+	///			but there seems to be no other way aside from free functions.
+	class IServiceLocator : public IServiceLocatorWeak
 	{
 		INTERFACE(IServiceLocator)
-
-		/// Get the instance of the specified service.
-		/// @param	key		The key used to register the contract.
-		virtual ContractWeak::type ResolveWeak(const std::string& key) abstract;
-
-		/// Get the instance of the specified service. Returns a null value if the
-		/// service is not registered.
-		/// @param	key		The key used to register the contract.
-		virtual ContractWeak::type ResolveOrDefaultWeak(const std::string& key, std::function<ContractWeak::type()> defaultValue = std::function<ContractWeak::type()>()) abstract;
-
-		/// Check if a contract has been registered.
-		/// @param	key		The key used to register the contract.
-		virtual bool CanResolveWeak(const std::string& key) abstract;
 
 		/// Get the instance of the specified service.
 		/// @tparam	TContract	The key used to register the contract.

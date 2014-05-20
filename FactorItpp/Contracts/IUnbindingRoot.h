@@ -40,17 +40,25 @@ namespace FactorIt
 {
 namespace Contracts
 {
+	namespace {
+		class IUnbindingRootWeak
+		{
+			INTERFACE(IUnbindingRootWeak)
+
+			/// Unregister a service on the container using a string key.
+			virtual void UnregisterWeak(const std::string& key) abstract;
+		};
+	}
+
 	/// Represent an object that can unregister services in a dependency injection
 	/// container.
-	/// @note	This interface also provides a strongly typed templated automatic
-	///			override that should be used externally. Consider the Weak method
-	///			variant as internal methods.
-	class IUnbindingRoot
+	/// @note	Unfortunately, there seems to be no way of emulating extension methods that
+	///			can properly handle template parameters. For this reason, this interface
+	///			should contain all "extension methods" for its base interface. This is ugly
+	///			but there seems to be no other way aside from free functions.
+	class IUnbindingRoot : public IUnbindingRootWeak
 	{
 		INTERFACE(IUnbindingRoot)
-
-		/// Unregister a service on the container using a string key.
-		virtual void UnregisterWeak(const std::string& key) abstract;
 
 		/// Unregister a service on the container using a type key.
 		/// @tparam	TContract	The key that will be use to unregister the contract.
