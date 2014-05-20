@@ -1,3 +1,3 @@
-[submodule "Pacakges/bandit"]
-	path = Pacakges/bandit
-	url = https://github.com/joakimkarlsson/bandit.git
+[submodule "Packages/bandit"]
+	path = Packages/bandit
+	url = https://github.com/FurryBuilder/bandit.git
