@@ -40,7 +40,8 @@ namespace FactorIt
 {
 namespace Contracts
 {
-	namespace {
+	namespace
+	{
 		class IServiceLocatorWeak
 		{
 			INTERFACE(IServiceLocatorWeak)
