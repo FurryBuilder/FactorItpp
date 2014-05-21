@@ -44,6 +44,7 @@ namespace Contracts
 	{
 		INTERFACE(IUnbindingRootWeak)
 
+	protected:
 		/// Unregister a service on the container using a string key.
 		virtual void UnbindWeak(const std::string& key) abstract;
 	};

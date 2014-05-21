@@ -33,6 +33,7 @@
 #include <memory>
 
 #include "ContractTypes.h"
+#include "IServiceLocator.h"
 
 namespace FurryBuilder
 {
@@ -66,12 +67,28 @@ namespace Contracts
 			static_assert(std::is_base_of<TContract, TService>::value, "TService must be a type of TContract");
 			static_assert(std::is_default_constructible<TService>::value, "TService must have a public accesible default constructor");
 
-			ToWeak([](IServiceLocator* l){ return std::static_pointer_cast<void>(std::make_shared<TService>()); });
+			ToWeak([](IServiceLocator* _){ return std::static_pointer_cast<void>(std::make_shared<TService>()); });
 		}
 
 		void To(typename FactoryStrong<TContract>::type factory)
 		{
 			ToWeak(static_cast<FactoryWeak::type>(factory));
+		}
+
+		template<typename TService>
+		void Forward(IServiceLocator* serviceLocator)
+		{
+			static_assert(std::is_base_of<TContract, TService>::value, "TService must be a type of TContract");
+
+			ToWeak([](IServiceLocator* _){ return std::static_pointer_cast<void>(serviceLocator->Resolve<TService>()); });
+		}
+
+		template<typename TService>
+		void Forward(IServiceLocator* serviceLocator, const std::string& key)
+		{
+			static_assert(std::is_base_of<TContract, TService>::value, "TService must be a type of TContract");
+
+			ToWeak([](IServiceLocator* _){ return std::static_pointer_cast<void>(serviceLocator->Resolve<TService>(key)); });
 		}
 	};
 }
