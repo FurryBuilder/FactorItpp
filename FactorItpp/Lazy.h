@@ -24,8 +24,8 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_LAZY
-#define FURRYBUILDER_FACTORIT_LAZY
+#ifndef FURRYBUILDER_FACTORIT_LAZY_H
+#define FURRYBUILDER_FACTORIT_LAZY_H
 
 #include <functional>
 #include <memory>

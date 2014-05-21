@@ -24,14 +24,46 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_CONTRACTS_H
-#define FURRYBUILDER_FACTORIT_CONTRACTS_H
+#ifndef FURRYBUILDER_FACTORIT_BINDING_SYNTAX_H
+#define FURRYBUILDER_FACTORIT_BINDING_SYNTAX_H
 
-#include "ContractTypes.h"
-#include "IBindingRoot.h"
-#include "IBindingTo.h"
-#include "IContainer.h"
-#include "IServiceLocator.h"
-#include "IUnbindingRoot.h"
+#include "Contracts/IBindingTo.h"
+
+namespace FurryBuilder
+{
+namespace FactorIt
+{
+	template<typename TContract>
+	class BindingSyntax : public Contracts::IBindingTo<TContract>
+	{
+		DISABLE_COPY(BindingSyntax)
+
+	public:
+		BindingSyntax() { }
+
+		virtual ~BindingSyntax() { }
+
+	public:
+		virtual void ToWeak(Contracts::FactoryWeak::type factory) override
+		{
+			_register(factory);
+		}
+
+		virtual void SetServiceLocator(Contracts::IServiceLocator* serviceLocator) override
+		{
+			_serviceLocator = serviceLocator;
+		}
+		
+		virtual void SetOnRegister(Contracts::RegisterAction_t action) override
+		{
+			_register = action;
+		}
+
+	private:
+		Contracts::IServiceLocator* _serviceLocator;
+		Contracts::RegisterAction_t _register;
+	};
+}
+}
 
 #endif

@@ -10,37 +10,39 @@ go_bandit([]()
 {
 	describe("a FactorIt++ container with one registered service using an extenede key", []()
 	{
-		Container _container;
+		auto _container = std::make_shared<Container>();
 
-		_container.Register<Stubs::IStubService>("test", [](Contracts::IServiceLocator* l){ return std::make_shared<Stubs::StubService>(); });
+		_container
+			->Bind<Stubs::IStubService>("test")
+			->To([](Contracts::IServiceLocator* l){ return std::make_shared<Stubs::StubService>(); });
 
-		it("can check for resolving existing services", [&]()
+		it("can check for resolving existing services", [=]()
 		{
-			AssertThat(_container.CanResolve<Stubs::IStubService>("test"), Equals(true));
+			AssertThat(_container->CanResolve<Stubs::IStubService>("test"), Equals(true));
 		});
 
-		it("can check for resolving non-existing services", [&]()
+		it("can check for resolving non-existing services", [=]()
 		{
-			AssertThat(_container.CanResolve<Stubs::IStubService>(), Equals(false));
-			AssertThat(_container.CanResolve<Contracts::IServiceLocator>("test"), Equals(false));
+			AssertThat(_container->CanResolve<Stubs::IStubService>(), Equals(false));
+			AssertThat(_container->CanResolve<Contracts::IServiceLocator>("test"), Equals(false));
 		});
 
-		it("can resolve existing services", [&]()
+		it("can resolve existing services", [=]()
 		{
-			auto s = _container.Resolve<Stubs::IStubService>("test");
+			auto s = _container->Resolve<Stubs::IStubService>("test");
 
 			AssertThat((bool)s, Equals(true));
 		});
 
-		it("cannot resolve non-existing services", [&]()
+		it("cannot resolve non-existing services", [=]()
 		{
-			AssertThrows(std::runtime_error, _container.Resolve<Stubs::IStubService>());
+			AssertThrows(std::runtime_error, _container->Resolve<Stubs::IStubService>());
 		});
 
-		it("can resolve existing services twice to the same instance", [&]()
+		it("can resolve existing services twice to the same instance", [=]()
 		{
-			auto s1 = _container.Resolve<Stubs::IStubService>("test");
-			auto s2 = _container.Resolve<Stubs::IStubService>("test");
+			auto s1 = _container->Resolve<Stubs::IStubService>("test");
+			auto s2 = _container->Resolve<Stubs::IStubService>("test");
 
 			AssertThat(s1.get(), Equals(s2.get()));
 		});

@@ -24,8 +24,8 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_CONTRACT_TYPES
-#define FURRYBUILDER_FACTORIT_CONTRACT_TYPES
+#ifndef FURRYBUILDER_FACTORIT_CONTRACT_TYPES_H
+#define FURRYBUILDER_FACTORIT_CONTRACT_TYPES_H
 
 #include <functional>
 #include <memory>

@@ -9,16 +9,16 @@ go_bandit([]()
 {
 	describe("an empty FactorIt++ container", []()
 	{
-		Container _container;
+		auto _container = std::make_shared<Container>();
 
 		it("can check for resolving but will fail", [&]()
 		{
-			AssertThat(_container.CanResolveWeak(""), Equals(false));
+			AssertThat(_container->CanResolve<int>(), Equals(false));
 		});
 
 		it("cannot resolve", [&]()
 		{
-			AssertThrows(std::runtime_error, _container.ResolveWeak(""));
+			AssertThrows(std::runtime_error, _container->Resolve<int>());
 		});
 
 		//it("can pospone things to be executed later", [&]()

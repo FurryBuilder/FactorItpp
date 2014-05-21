@@ -56,5 +56,11 @@
     <ClInclude Include="Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Contracts\IBindingTo.h">
+      <Filter>Contracts</Filter>
+    </ClInclude>
+    <ClInclude Include="BindingSyntax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

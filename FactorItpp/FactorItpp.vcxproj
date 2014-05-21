@@ -83,11 +83,13 @@
     <ClCompile Include="Container.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BindingSyntax.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Contracts\Contracts.h" />
     <ClInclude Include="Contracts\ContractTypes.h" />
     <ClInclude Include="Contracts\IBindingRoot.h" />
+    <ClInclude Include="Contracts\IBindingTo.h" />
     <ClInclude Include="Contracts\IContainer.h" />
     <ClInclude Include="Contracts\IServiceLocator.h" />
     <ClInclude Include="Contracts\IUnbindingRoot.h" />

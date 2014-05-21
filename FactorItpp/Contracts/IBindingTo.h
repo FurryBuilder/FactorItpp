@@ -24,14 +24,58 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_CONTRACTS_H
-#define FURRYBUILDER_FACTORIT_CONTRACTS_H
+#ifndef FURRYBUILDER_FACTORIT_I_BINDING_TO_H
+#define FURRYBUILDER_FACTORIT_I_BINDING_TO_H
+
+#include "../Common.h"
+
+#include <functional>
+#include <memory>
 
 #include "ContractTypes.h"
-#include "IBindingRoot.h"
-#include "IBindingTo.h"
-#include "IContainer.h"
-#include "IServiceLocator.h"
-#include "IUnbindingRoot.h"
+
+namespace FurryBuilder
+{
+namespace FactorIt
+{
+namespace Contracts
+{
+	typedef std::function<void(FactoryWeak::type factory)> RegisterAction_t;
+
+	class IBindingToWeak
+	{
+		INTERFACE(IBindingToWeak)
+
+		virtual void SetServiceLocator(IServiceLocator* serviceLocator) abstract;
+		virtual void SetOnRegister(RegisterAction_t action) abstract;
+
+	// Required to hide the Weak/Strong mecanism which should be considered as
+	// internal code.
+	protected:
+		virtual void ToWeak(FactoryWeak::type factory) abstract;
+	};
+
+	template<typename TContract>
+	class IBindingTo : public IBindingToWeak
+	{
+		INTERFACE(IBindingTo)
+
+		template<typename TService>
+		void To()
+		{
+			static_assert(std::is_base_of<TContract, TService>::value, "TService must be a type of TContract");
+			static_assert(std::is_default_constructible<TService>::value, "TService must have a public accesible default constructor");
+
+			ToWeak([](IServiceLocator* l){ return std::static_pointer_cast<void>(std::make_shared<TService>()); });
+		}
+
+		void To(typename FactoryStrong<TContract>::type factory)
+		{
+			ToWeak(static_cast<FactoryWeak::type>(factory));
+		}
+	};
+}
+}
+}
 
 #endif

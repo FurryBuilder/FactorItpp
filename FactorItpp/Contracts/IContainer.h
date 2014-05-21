@@ -24,8 +24,8 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_I_CONTAINER
-#define FURRYBUILDER_FACTORIT_I_CONTAINER
+#ifndef FURRYBUILDER_FACTORIT_I_CONTAINER_H
+#define FURRYBUILDER_FACTORIT_I_CONTAINER_H
 
 #include "../Common.h"
 

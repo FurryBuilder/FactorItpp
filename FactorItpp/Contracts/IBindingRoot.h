@@ -24,8 +24,8 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_I_BINDING_ROOT
-#define FURRYBUILDER_FACTORIT_I_BINDING_ROOT
+#ifndef FURRYBUILDER_FACTORIT_I_BINDING_ROOT_H
+#define FURRYBUILDER_FACTORIT_I_BINDING_ROOT_H
 
 #include "../Common.h"
 
@@ -34,52 +34,54 @@
 
 #include "ContractTypes.h"
 
+#include "../BindingSyntax.h"
+
 namespace FurryBuilder
 {
 namespace FactorIt
 {
 namespace Contracts
 {
-	namespace
+	class IBindingToWeak;
+
+	template<typename TContract>
+	class IBindingTo;
+
+	class IBindingRootWeak
 	{
-		class IBindingRootWeak
-		{
-			INTERFACE(IBindingRootWeak)
+		INTERFACE(IBindingRootWeak)
 
-			/// Register a service on the container using a string key.
-			/// @param	key		The key that will be use to register the contract.
-			/// @param	factory	The factory used to instanciate the contract.
-			virtual void RegisterWeak(const std::string& key, FactoryWeak::type factory) abstract;
-		};
-	}
+	// Required to hide the Weak/Strong mecanism which should be considered as
+	// internal code.
+	protected:
+		virtual void SetServiceLocator(std::unique_ptr<IBindingToWeak>& bindingTo) abstract;
+		virtual void SetOnRegister(std::unique_ptr<IBindingToWeak>& bindingTo, const std::string& key) abstract;
+	};
 
-	/// Represent an object that can register services in a dependency injection
-	/// container for later use by the IServiceLocator.
-	/// @note	Unfortunately, there seems to be no way of emulating extension methods that
-	///			can properly handle template parameters. For this reason, this interface
-	///			should contain all "extension methods" for its base interface. This is ugly
-	///			but there seems to be no other way aside from free functions.
 	class IBindingRoot : public IBindingRootWeak
 	{
 		INTERFACE(IBindingRoot)
 
-		/// Register a service on the container using a type key.
-		/// @tparam	TContract	The key that will be use to register the contract.
-		/// @param	factory		The factory used to instanciate the contract.
 		template<typename TContract>
-		void Register(typename FactoryStrong<TContract>::type factory)
+		typename std::unique_ptr<IBindingTo<TContract>> Bind()
 		{
-			RegisterWeak(BuildKey<TContract>(), static_cast<FactoryWeak::type>(factory));
+			std::unique_ptr<IBindingToWeak> syntax = std::make_unique<BindingSyntax<TContract>>();
+
+			SetServiceLocator(syntax);
+			SetOnRegister(syntax, BuildKey<TContract>());
+
+			return std::unique_ptr<IBindingTo<TContract>>(static_cast<IBindingTo<TContract>*>(syntax.release()));
 		}
 
-		/// Register a service on the container using a type key.
-		/// @tparam	TContract	The key that will be use to register the contract.
-		/// @param	key			The name of the service.
-		/// @param	factory		The factory used to instanciate the contract.
 		template<typename TContract>
-		void Register(const std::string& key, typename FactoryStrong<TContract>::type factory)
+		typename std::unique_ptr<IBindingTo<TContract>> Bind(const std::string& key)
 		{
-			RegisterWeak(BuildKey<TContract>(key), static_cast<FactoryWeak::type>(factory));
+			std::unique_ptr<IBindingToWeak> syntax = std::make_unique<BindingSyntax<TContract>>();
+
+			SetServiceLocator(syntax);
+			SetOnRegister(syntax, BuildKey<TContract>(key));
+
+			return std::unique_ptr<IBindingTo<TContract>>(static_cast<IBindingTo<TContract>*>(syntax.release()));
 		}
 	};
 }

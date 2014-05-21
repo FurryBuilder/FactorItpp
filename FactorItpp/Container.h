@@ -24,12 +24,12 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_CONTAINER
-#define FURRYBUILDER_FACTORIT_CONTAINER
+#ifndef FURRYBUILDER_FACTORIT_CONTAINER_H
+#define FURRYBUILDER_FACTORIT_CONTAINER_H
 
 #include <map>
 
-#include "Contracts/Contracts.h"
+#include "Contracts\IContainer.h"
 
 #include "Lazy.h"
 
@@ -47,8 +47,10 @@ namespace FactorIt
 
 		virtual ~Container() { }
 
-	public:
-		virtual void RegisterWeak(const std::string& key, Contracts::FactoryWeak::type factory) override;
+	protected:
+		virtual void SetServiceLocator(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo) override;
+		virtual void SetOnRegister(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo, const std::string& key) override;
+
 		virtual void UnregisterWeak(const std::string& key) override;
 		virtual Contracts::ContractWeak::type ResolveWeak(const std::string& key) override;
 		virtual Contracts::ContractWeak::type ResolveOrDefaultWeak(
@@ -58,6 +60,8 @@ namespace FactorIt
 		virtual bool CanResolveWeak(const std::string& key) override;
 
 	private:
+		void Register(const std::string& key, Contracts::FactoryWeak::type factory);
+
 		std::map<std::string, std::unique_ptr<Lazy<void>>> _contracts;
 	};
 }

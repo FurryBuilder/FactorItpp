@@ -24,8 +24,8 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_I_UNBINDING_ROOT
-#define FURRYBUILDER_FACTORIT_I_UNBINDING_ROOT
+#ifndef FURRYBUILDER_FACTORIT_I_UNBINDING_ROOT_H
+#define FURRYBUILDER_FACTORIT_I_UNBINDING_ROOT_H
 
 #include "../Common.h"
 
@@ -40,16 +40,13 @@ namespace FactorIt
 {
 namespace Contracts
 {
-	namespace
+	class IUnbindingRootWeak
 	{
-		class IUnbindingRootWeak
-		{
-			INTERFACE(IUnbindingRootWeak)
+		INTERFACE(IUnbindingRootWeak)
 
-			/// Unregister a service on the container using a string key.
-			virtual void UnregisterWeak(const std::string& key) abstract;
-		};
-	}
+		/// Unregister a service on the container using a string key.
+		virtual void UnregisterWeak(const std::string& key) abstract;
+	};
 
 	/// Represent an object that can unregister services in a dependency injection
 	/// container.

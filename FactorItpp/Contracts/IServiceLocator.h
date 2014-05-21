@@ -24,8 +24,8 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_I_SERVICE_LOCATOR
-#define FURRYBUILDER_FACTORIT_I_SERVICE_LOCATOR
+#ifndef FURRYBUILDER_FACTORIT_I_SERVICE_LOCATOR_H
+#define FURRYBUILDER_FACTORIT_I_SERVICE_LOCATOR_H
 
 #include "../Common.h"
 
@@ -40,26 +40,26 @@ namespace FactorIt
 {
 namespace Contracts
 {
-	namespace
+	class IServiceLocatorWeak
 	{
-		class IServiceLocatorWeak
-		{
-			INTERFACE(IServiceLocatorWeak)
+		INTERFACE(IServiceLocatorWeak)
 
-			/// Get the instance of the specified service.
-			/// @param	key		The key used to register the contract.
-			virtual ContractWeak::type ResolveWeak(const std::string& key) abstract;
+	// Required to hide the Weak/Strong mecanism which should be considered as
+	// internal code.
+	protected:
+		/// Get the instance of the specified service.
+		/// @param	key		The key used to register the contract.
+		virtual ContractWeak::type ResolveWeak(const std::string& key) abstract;
 
-			/// Get the instance of the specified service. Returns a null value if the
-			/// service is not registered.
-			/// @param	key		The key used to register the contract.
-			virtual ContractWeak::type ResolveOrDefaultWeak(const std::string& key, std::function<ContractWeak::type()> defaultValue = std::function<ContractWeak::type()>()) abstract;
+		/// Get the instance of the specified service. Returns a null value if the
+		/// service is not registered.
+		/// @param	key		The key used to register the contract.
+		virtual ContractWeak::type ResolveOrDefaultWeak(const std::string& key, std::function<ContractWeak::type()> defaultValue = std::function<ContractWeak::type()>()) abstract;
 
-			/// Check if a contract has been registered.
-			/// @param	key		The key used to register the contract.
-			virtual bool CanResolveWeak(const std::string& key) abstract;
-		};
-	}
+		/// Check if a contract has been registered.
+		/// @param	key		The key used to register the contract.
+		virtual bool CanResolveWeak(const std::string& key) abstract;
+	};
 
 	/// Represent an object that can resolve services registered on a dependency
 	/// injection container.

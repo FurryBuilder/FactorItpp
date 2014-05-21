@@ -24,8 +24,8 @@
 //
 //=============================================================================
 
-#ifndef FURRYBUILDER_FACTORIT_COMMON
-#define FURRYBUILDER_FACTORIT_COMMON
+#ifndef FURRYBUILDER_FACTORIT_COMMON_H
+#define FURRYBUILDER_FACTORIT_COMMON_H
 
 #include "ObjectOrientedTools.h"
 #include "Keywords.h"

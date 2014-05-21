@@ -27,15 +27,16 @@
 #include "Container.h"
 
 using namespace FurryBuilder::FactorIt;
+using namespace std::placeholders;
 
-void Container::RegisterWeak(const std::string& key, Contracts::FactoryWeak::type factory)
+void Container::SetServiceLocator(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo)
 {
-	if (CanResolveWeak(key))
-	{
-		throw std::runtime_error("Contract [" + key + "] is already registered");
-	}
+	bindingTo->SetServiceLocator(this);
+}
 
-	_contracts.emplace(key, std::make_unique<Lazy<void>>([this, factory]() { return factory(this); }));
+void Container::SetOnRegister(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo, const std::string& key)
+{
+	bindingTo->SetOnRegister(std::bind(&Container::Register, this, key, _1));
 }
 
 void Container::UnregisterWeak(std::string const& key)
@@ -80,4 +81,14 @@ Contracts::ContractWeak::type Container::ResolveOrDefaultWeak(std::string const&
 bool Container::CanResolveWeak(std::string const& key)
 {
 	return _contracts.find(key) != _contracts.end();
+}
+
+void Container::Register(const std::string& key, Contracts::FactoryWeak::type factory)
+{
+	if (CanResolveWeak(key))
+	{
+		throw std::runtime_error("Contract [" + key + "] is already registered");
+	}
+
+	_contracts.emplace(key, std::make_unique<Lazy<void>>([this, factory]() { return factory(this); }));
 }
