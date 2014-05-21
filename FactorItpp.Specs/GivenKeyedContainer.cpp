@@ -14,7 +14,7 @@ go_bandit([]()
 
 		_container
 			->Bind<Stubs::IStubService>("test")
-			->To([](Contracts::IServiceLocator* l){ return std::make_shared<Stubs::StubService>(); });
+			->To<Stubs::StubService>();
 
 		it("can check for resolving existing services", [=]()
 		{
