@@ -45,7 +45,7 @@ namespace Contracts
 		INTERFACE(IUnbindingRootWeak)
 
 		/// Unregister a service on the container using a string key.
-		virtual void UnregisterWeak(const std::string& key) abstract;
+		virtual void UnbindWeak(const std::string& key) abstract;
 	};
 
 	/// Represent an object that can unregister services in a dependency injection
@@ -61,9 +61,9 @@ namespace Contracts
 		/// Unregister a service on the container using a type key.
 		/// @tparam	TContract	The key that will be use to unregister the contract.
 		template<typename TContract>
-		void Unregister()
+		void Unbind()
 		{
-			UnregisterWeak(BuildKey<TContract>());
+			UnbindWeak(BuildKey<TContract>());
 		}
 
 		/// Unregister a service on the container using a type key and an
@@ -71,9 +71,9 @@ namespace Contracts
 		/// @tparam	TContract	The key that will be use to unregister the contract.
 		/// @param	key			The name of the service.
 		template<typename TContract>
-		void Unregister(const std::string& key)
+		void Unbind(const std::string& key)
 		{
-			UnregisterWeak(BuildKey<TContract>(key));
+			UnbindWeak(BuildKey<TContract>(key));
 		}
 	};
 }

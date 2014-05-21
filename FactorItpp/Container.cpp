@@ -44,7 +44,7 @@ void Container::SetOnRegister(std::unique_ptr<Contracts::IBindingToWeak>& bindin
 	bindingTo->SetOnRegister(std::bind(&Container::Register, this, key, _1));
 }
 
-void Container::UnregisterWeak(std::string const& key)
+void Container::UnbindWeak(std::string const& key)
 {
 	auto elementRemoved = _contracts.erase(key);
 
