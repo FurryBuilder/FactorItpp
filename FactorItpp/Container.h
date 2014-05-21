@@ -42,10 +42,13 @@ namespace FactorIt
 	{
 		DISABLE_COPY(Container)
 
-	public:
-		Container() { }
+	private:
+		Container() {}
 
+	public:
 		virtual ~Container() { }
+
+		static std::unique_ptr<IContainer> CreateRoot();
 
 	protected:
 		virtual void SetServiceLocator(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo) override;

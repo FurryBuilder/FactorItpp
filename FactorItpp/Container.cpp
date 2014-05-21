@@ -29,6 +29,11 @@
 using namespace FurryBuilder::FactorIt;
 using namespace std::placeholders;
 
+std::unique_ptr<Contracts::IContainer> Container::CreateRoot()
+{
+	return std::unique_ptr<Container>(new Container());
+}
+
 void Container::SetServiceLocator(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo)
 {
 	bindingTo->SetServiceLocator(this);

@@ -10,7 +10,7 @@ go_bandit([]()
 {
 	describe("a FactorIt++ container with one registered service", []()
 	{
-		auto _container = std::make_shared<Container>();
+		std::shared_ptr<Contracts::IContainer> _container = Container::CreateRoot();
 
 		_container
 			->Bind<Stubs::IStubService>()

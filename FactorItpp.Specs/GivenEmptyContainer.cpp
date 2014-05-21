@@ -9,7 +9,7 @@ go_bandit([]()
 {
 	describe("an empty FactorIt++ container", []()
 	{
-		auto _container = std::make_shared<Container>();
+		std::shared_ptr<Contracts::IContainer> _container = Container::CreateRoot();
 
 		it("can check for resolving but will fail", [&]()
 		{
