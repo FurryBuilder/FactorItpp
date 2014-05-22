@@ -5,7 +5,6 @@ set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(cotire/CMake/cotire)
 
 include_directories("${PROJECT_SOURCE_DIR}")
-include_directories("${PROJECT_SOURCE_DIR}/Packages/bandit")
 include_directories("${PROJECT_SOURCE_DIR}/Common")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
@@ -39,12 +38,13 @@ if (CMAKE_HOST_APPLE AND (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
 endif()
 
 file(GLOB FactorItppSourceFiles FactorItpp/*.cpp FactorItpp/**/*.cpp)
-add_library(factoritpp STATIC ${FactorItppSpecSourceFiles} )
+add_library(factoritpp STATIC ${FactorItppSourceFiles} )
 cotire(factoritpp)
 
 file(GLOB FactorItppSpecSourceFiles FactorItpp.Specs/*.cpp FactorItpp.Specs/**/*.cpp)
 add_executable(factoritpp-specs ${FactorItppSpecSourceFiles} )
-target_include_directories(factoritpp-specs "${PROJECT_SOURCE_DIR}/FactorItpp")
+target_include_directories(factoritpp-specs PUBLIC "${PROJECT_SOURCE_DIR}/Packages/bandit")
+target_include_directories(factoritpp-specs PRIVATE "${PROJECT_SOURCE_DIR}/FactorItpp")
 set_target_properties(factoritpp-specs PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "FactorItpp.Specs/Stubs.h")
 set_target_properties(factoritpp-specs PROPERTIES COTIRE_ADD_UNIT_BUILD FALSE)
 cotire(factoritpp-specs)
