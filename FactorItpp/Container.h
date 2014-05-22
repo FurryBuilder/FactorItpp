@@ -54,13 +54,13 @@ namespace FactorIt
 		virtual void SetServiceLocator(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo) override;
 		virtual void SetOnRegister(std::unique_ptr<Contracts::IBindingToWeak>& bindingTo, const std::string& key) override;
 
-		virtual void UnbindWeak(const std::string& key) override;
+		virtual bool CanResolveWeak(const std::string& key) override;
 		virtual Contracts::ContractWeak::type ResolveWeak(const std::string& key) override;
 		virtual Contracts::ContractWeak::type ResolveOrDefaultWeak(
 			const std::string& key,
 			std::function<Contracts::ContractWeak::type()> defaultValue = std::function<Contracts::ContractWeak::type()>()
 		) override;
-		virtual bool CanResolveWeak(const std::string& key) override;
+		virtual void UnbindWeak(const std::string& key) override;
 
 	private:
 		void Register(const std::string& key, Contracts::FactoryWeak::type factory);

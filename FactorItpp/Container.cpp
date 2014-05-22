@@ -44,14 +44,9 @@ void Container::SetOnRegister(std::unique_ptr<Contracts::IBindingToWeak>& bindin
 	bindingTo->SetOnRegister(std::bind(&Container::Register, this, key, _1));
 }
 
-void Container::UnbindWeak(std::string const& key)
+bool Container::CanResolveWeak(std::string const& key)
 {
-	auto elementRemoved = _contracts.erase(key);
-
-	if (elementRemoved != 1)
-	{
-		throw std::runtime_error("Contract [" + key + "] is not registered");
-	}
+	return _contracts.find(key) != _contracts.end();
 }
 
 Contracts::ContractWeak::type Container::ResolveWeak(const std::string& key)
@@ -83,9 +78,14 @@ Contracts::ContractWeak::type Container::ResolveOrDefaultWeak(std::string const&
 	return pos->second->GetValue();
 }
 
-bool Container::CanResolveWeak(std::string const& key)
+void Container::UnbindWeak(std::string const& key)
 {
-	return _contracts.find(key) != _contracts.end();
+	auto elementRemoved = _contracts.erase(key);
+
+	if (elementRemoved != 1)
+	{
+		throw std::runtime_error("Contract [" + key + "] is not registered");
+	}
 }
 
 void Container::Register(const std::string& key, Contracts::FactoryWeak::type factory)

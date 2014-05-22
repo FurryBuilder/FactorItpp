@@ -47,6 +47,10 @@ namespace Contracts
 	// Required to hide the Weak/Strong mecanism which should be considered as
 	// internal code.
 	protected:
+		/// Check if a contract has been registered.
+		/// @param	key		The key used to register the contract.
+		virtual bool CanResolveWeak(const std::string& key) abstract;
+
 		/// Get the instance of the specified service.
 		/// @param	key		The key used to register the contract.
 		virtual ContractWeak::type ResolveWeak(const std::string& key) abstract;
@@ -55,10 +59,6 @@ namespace Contracts
 		/// service is not registered.
 		/// @param	key		The key used to register the contract.
 		virtual ContractWeak::type ResolveOrDefaultWeak(const std::string& key, std::function<ContractWeak::type()> defaultValue = std::function<ContractWeak::type()>()) abstract;
-
-		/// Check if a contract has been registered.
-		/// @param	key		The key used to register the contract.
-		virtual bool CanResolveWeak(const std::string& key) abstract;
 	};
 
 	/// Represent an object that can resolve services registered on a dependency
@@ -70,6 +70,23 @@ namespace Contracts
 	class IServiceLocator : public IServiceLocatorWeak
 	{
 		INTERFACE(IServiceLocator)
+
+		/// Check if a contract has been registered.
+		/// @tparam	TContract	The key used to register the contract.
+		template<typename TContract>
+		bool CanResolve()
+		{
+			return CanResolveWeak(BuildKey<TContract>());
+		}
+
+		/// Check if a contract has been registered.
+		/// @tparam	TContract	The key used to register the contract.
+		/// @param	key			The name of the service.
+		template<typename TContract>
+		bool CanResolve(const std::string& key)
+		{
+			return CanResolveWeak(BuildKey<TContract>(key));
+		}
 
 		/// Get the instance of the specified service.
 		/// @tparam	TContract	The key used to register the contract.
@@ -103,23 +120,6 @@ namespace Contracts
 		typename ContractStrong<TContract>::type ResolveOrDefault(const std::string& key, std::function<typename ContractStrong<TContract>::type()> defaultValue)
 		{
 			return std::static_pointer_cast<TContract>(ResolveOrDefaultWeak(BuildKey<TContract>(key), std::static_pointer_cast<void>(defaultValue)));
-		}
-
-		/// Check if a contract has been registered.
-		/// @tparam	TContract	The key used to register the contract.
-		template<typename TContract>
-		bool CanResolve()
-		{
-			return CanResolveWeak(BuildKey<TContract>());
-		}
-
-		/// Check if a contract has been registered.
-		/// @tparam	TContract	The key used to register the contract.
-		/// @param	key			The name of the service.
-		template<typename TContract>
-		bool CanResolve(const std::string& key)
-		{
-			return CanResolveWeak(BuildKey<TContract>(key));
 		}
 	};
 }
