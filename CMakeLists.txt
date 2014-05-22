@@ -5,6 +5,7 @@ set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(cotire/CMake/cotire)
 
 include_directories("${PROJECT_SOURCE_DIR}")
+include_directories("${PROJECT_SOURCE_DIR}/Common")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 

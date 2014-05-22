@@ -1,4 +1,4 @@
-FactorIt++
+FactorIt++ [![Build Status](https://travis-ci.org/FurryBuilder/FactorItpp.svg?branch=master)](https://travis-ci.org/FurryBuilder/FactorItpp)
 ==========
 
 This is a port of the FactorIt .NET dependency injection container to C++. This port is designed to behave and feel just like the original. It uses the same fluent interface as the .NET version and strive to offer a similar feature set.

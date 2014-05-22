@@ -47,15 +47,6 @@
     <ClInclude Include="Contracts\IUnbindingRoot.h">
       <Filter>Contracts</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectOrientedTools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Keywords.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Contracts\IBindingTo.h">
       <Filter>Contracts</Filter>
     </ClInclude>

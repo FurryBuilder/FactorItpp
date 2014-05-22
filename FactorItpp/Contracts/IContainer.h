@@ -27,7 +27,7 @@
 #ifndef FURRYBUILDER_FACTORIT_I_CONTAINER_H
 #define FURRYBUILDER_FACTORIT_I_CONTAINER_H
 
-#include "../Common.h"
+#include <Common.h>
 
 #include <functional>
 #include <memory>
