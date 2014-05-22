@@ -6,6 +6,7 @@ include(cotire/CMake/cotire)
 
 include_directories("${PROJECT_SOURCE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/Common")
+include_directories("${PROJECT_SOURCE_DIR}/Packages/bandit")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 
