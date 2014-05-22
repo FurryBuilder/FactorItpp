@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(FactorItpp)
 
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-include(Packages/cotire/latest/CMake/cotire)
+include(cotire/CMake/cotire)
 
 include_directories("${PROJECT_SOURCE_DIR}")
 
