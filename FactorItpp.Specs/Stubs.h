@@ -1,7 +1,7 @@
 #ifndef FURRYBUILDER_FACTORIT_SPECS_STUBS
 #define FURRYBUILDER_FACTORIT_SPECS_STUBS
 
-#include "Common.h"
+#include <Common.h>
 
 namespace Stubs
 {
