@@ -7,16 +7,14 @@ compiler:
 cache:
   - apt
   - directories:
-    - /tmp/cmake-3.1.0
+    - /tmp/cmake
 
 before_install:
-  - REPOSITORY_DIRECTORY=$(pwd); printf "REPOSITORY_DIRECTORY=%s\n" $(REPOSITORY_DIRECTORY);
-
   # g++ 4.9.0
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 
   # cmake 3.1.0
-  - if [ ! -d "/tmp/cmake-3.1.0" ]; then cd /tmp; wget http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz; tar xzf cmake-3.1.0.tar.gz; cd cmake-3.1.0; ./configure; make; fi
+  - if [ ! -d "/tmp/cmake" ]; then wget -O /tmp/cmake.tar.gz http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz; tar xzf /tmp/cmake/cmake.tar.gz;; /tmp/cmake/configure; /tmp/cmake/make; fi
 
   # system
   - sudo apt-get update -qq
@@ -24,10 +22,10 @@ before_install:
 install:
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq libboost1.48-dev libyajl-dev libxml2-dev libxqilla-dev; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; export CXX="g++-4.9" CC="gcc-4.9"; fi
-  - cd /tmp/cmake-3.1.0; sudo make install; /usr/local/bin/cmake --version;
+  - sudo /tmp/cmake/make install; /usr/local/bin/cmake --version;
 
 before_script:
-  - BUILD_DIR=`REPOSITORY_DIRECTORY`/builds
+  - BUILD_DIR=`pwd`/builds
   - mkdir -p ${BUILD_DIR}
   - cd ${BUILD_DIR}
   - cmake ..
