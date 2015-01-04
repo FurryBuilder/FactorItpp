@@ -22,7 +22,8 @@ before_install:
 install:
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq libboost1.48-dev libyajl-dev libxml2-dev libxqilla-dev; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; export CXX="g++-4.9" CC="gcc-4.9"; fi
-  - sudo /tmp/cmake-3.1.0/make install; /usr/local/bin/cmake --version;
+  - cd /tmp/cmake-3.1.0; sudo make install; /usr/local/bin/cmake --version;
+  - cd /home/travis/build/FurryBuilder/FactorItpp
 
 before_script:
   - BUILD_DIR=`pwd`/builds
