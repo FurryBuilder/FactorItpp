@@ -7,14 +7,14 @@ compiler:
 cache:
   - apt
   - directories:
-    - /tmp/cmake
+    - /tmp/cmake-3.1.0
 
 before_install:
   # g++ 4.9.0
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 
   # cmake 3.1.0
-  - if [ ! -d "/tmp/cmake" ]; then wget -O /tmp/cmake.tar.gz http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz; tar xzf /tmp/cmake.tar.gz; /tmp/cmake/configure; /tmp/cmake/make; fi
+  - if [ ! -d "/tmp/cmake-3.1.0" ]; then wget http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz; tar xzf /tmp/cmake-3.1.0.tar.gz; /tmp/cmake-3.1.0/configure; /tmp/cmake-3.1.0/make; fi
 
   # system
   - sudo apt-get update -qq
@@ -22,7 +22,7 @@ before_install:
 install:
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq libboost1.48-dev libyajl-dev libxml2-dev libxqilla-dev; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; export CXX="g++-4.9" CC="gcc-4.9"; fi
-  - sudo /tmp/cmake/make install; /usr/local/bin/cmake --version;
+  - sudo /tmp/cmake-3.1.0/make install; /usr/local/bin/cmake --version;
 
 before_script:
   - BUILD_DIR=`pwd`/builds
