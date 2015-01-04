@@ -13,7 +13,7 @@ before_install:
   - cd cmake-3.1.0
   - ./configure
   - make
-  - make install
+  - sudo make install
   - /usr/local/bin/cmake --version
 
   # system
