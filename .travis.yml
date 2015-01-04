@@ -26,11 +26,7 @@ install:
   - cd /home/travis/build/FurryBuilder/FactorItpp
 
 before_script:
-  - BUILD_DIR=`pwd`/builds
-  - mkdir -p ${BUILD_DIR}
-  - cd ${BUILD_DIR}
-  - cmake ..
+  - cmake
 
 script:
-  - cd ${BUILD_DIR}
   - make
