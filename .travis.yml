@@ -10,6 +10,8 @@ cache:
     - /tmp/cmake-3.1.0
 
 before_install:
+  - REPOSITORY_DIRECTORY=$(pwd); printf "REPOSITORY_DIRECTORY=%s\n" $(REPOSITORY_DIRECTORY);
+
   # g++ 4.9.0
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 
@@ -25,12 +27,11 @@ install:
   - cd /tmp/cmake-3.1.0; sudo make install; /usr/local/bin/cmake --version;
 
 before_script:
-  - BUILD_DIR=`pwd`/builds
+  - BUILD_DIR=`REPOSITORY_DIRECTORY`/builds
   - mkdir -p ${BUILD_DIR}
   - cd ${BUILD_DIR}
   - cmake ..
-  
+
 script:
   - cd ${BUILD_DIR}
-  - ls
   - make
