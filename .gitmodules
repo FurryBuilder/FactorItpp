@@ -1,6 +1,6 @@
-[submodule "Packages/bandit"]
-	path = Packages/bandit
-	url = https://github.com/FurryBuilder/bandit.git
 [submodule "cmake/cotire"]
 	path = cmake/cotire
 	url = https://github.com/sakra/cotire.git
+[submodule "Packages/bandit"]
+	path = Packages/bandit
+	url = https://github.com/joakimkarlsson/bandit.git
