@@ -3,14 +3,21 @@ compiler:
   - gcc
   - clang
 before_install:
+  - echo "Updating cmake to 3.1.0..."
+  - cd /root
+  - wget http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz
+  - tar xzf cmake-3.1.0.tar.gz
+  - cd cmake-3.1.0
+  - ./configure
+  - make
+  - make install
+  - /usr/local/bin/cmake --version
+  - echo "Updating g++ to 4.9..."
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-cache policy g++
-  - sudo apt-cache policy cmake
   - sudo apt-get update -qq
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq libboost1.48-dev libyajl-dev libxml2-dev libxqilla-dev; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; fi
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
-  - sudo apt-get install -qq cmake-2.8.11
 before_script:
   - BUILD_DIR=`pwd`/builds
   - mkdir -p ${BUILD_DIR}
