@@ -26,7 +26,9 @@ install:
   - cd /home/travis/build/FurryBuilder/FactorItpp
 
 before_script:
-  - cmake .
+  - cmake FactorItpp
+  - cmake FactorItpp.Specs
 
 script:
-  - make
+  - cd FactorItpp; make; cd ..
+  - cd FactorItpp.Specs; make; cd ..
