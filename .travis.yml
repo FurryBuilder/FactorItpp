@@ -28,4 +28,4 @@ install:
 before_script:
   - cmake .
 script:
-  - make
+  - make V=1
