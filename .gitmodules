@@ -1,3 +1,0 @@
-[submodule "Packages/bandit"]
-	path = Packages/bandit
-	url = https://github.com/joakimkarlsson/bandit.git
