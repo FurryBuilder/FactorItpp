@@ -8,21 +8,21 @@ Take a look at the [FactorIt repository](https://github.com/FurryBuilder/FactorI
 Feature Compatibility List
 --------------------------
 
-| Feature               |   .NET   |    C++   |
-| --------------------- |:--------:|:--------:|
-| No magic              | &#x2713; | &#x2713; |
-| Fluent interface      | &#x2713; | &#x2713; |
-| Read-only interface   | &#x2713; | &#x2713; |
-| Write-only interface  | &#x2713; | &#x2713; |
-| Templated binding     | &#x2713; | &#x2713; |
-| Templated unbinding   |          | &#x2713; |
-| Templated resolving   | &#x2713; | &#x2713; |
-| Service keys          | &#x2713; | &#x2713; |
-| Decorators            | &#x2713; |          |
-| Notifications         | &#x2713; |          |
-| Child containers      | &#x2713; |          |
-| Resolving scope       | &#x2713; |          |
-| Auto cleanup          | &#x2713; |    1     |
+| Feature                      |   .NET   |    C++   |
+| ---------------------------- |:--------:|:--------:|
+| No magic                     | &#x2713; | &#x2713; |
+| Fluent interface             | &#x2713; | &#x2713; |
+| Read-only interface          | &#x2713; | &#x2713; |
+| Write-only interface         | &#x2713; | &#x2713; |
+| Templated/Generic binding    | &#x2713; | &#x2713; |
+| Templated/Generic unbinding  |          | &#x2713; |
+| Templated/Generic resolving  | &#x2713; | &#x2713; |
+| Service keys                 | &#x2713; | &#x2713; |
+| Decorators                   | &#x2713; |          |
+| Notifications                | &#x2713; |          |
+| Child containers             | &#x2713; |          |
+| Resolving scope              | &#x2713; |          |
+| Auto cleanup                 | &#x2713; |    1     |
 
 1. Partially supported. Service destructor will be called when shared_ptr dies.
 
@@ -86,7 +86,7 @@ container
 ```
 
 ### Unbinding
-In some rare cases, you will want to unbind a specific service from the container. For this, you can use the `Unbind` method.
+In some rare cases, you will want to remove a specific service from the container. For this, you can use the `Unbind` method.
 
 ```cpp
 container
