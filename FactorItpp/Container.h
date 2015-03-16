@@ -28,6 +28,8 @@
 #define FURRYBUILDER_FACTORIT_CONTAINER_H
 
 #include <map>
+#include <vector>
+#include <functional>
 
 #include "Contracts\IContainer.h"
 
@@ -60,12 +62,19 @@ namespace FactorIt
 			const std::string& key,
 			std::function<Contracts::ContractWeak::type()> defaultValue = std::function<Contracts::ContractWeak::type()>()
 		) override;
+		virtual void PostponeWeak(const std::string& key, std::function<void(Contracts::ContractWeak::type)> callback) override;
 		virtual void UnbindWeak(const std::string& key) override;
 
 	private:
-		void Register(const std::string& key, Contracts::FactoryWeak::type factory);
+		typedef std::map<std::string, std::unique_ptr<Lazy<void>>> TContracts;
+		typedef std::map<std::string, std::vector<std::function<void(Contracts::ContractWeak::type)>>> TPostponedActions;
 
-		std::map<std::string, std::unique_ptr<Lazy<void>>> _contracts;
+		void Register(const std::string& key, Contracts::FactoryWeak::type factory);
+		void PostponeWeakLocal(const std::string& key, std::function<void(Contracts::ContractWeak::type)> callback);
+		void TriggerPostponedLocal(const std::string& key, const TContracts::iterator& registration);
+
+		TContracts _contracts;
+		TPostponedActions _postponedActions;
 	};
 }
 }

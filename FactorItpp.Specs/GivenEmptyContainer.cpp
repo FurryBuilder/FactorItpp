@@ -1,6 +1,7 @@
 #include <bandit/bandit.h>
 
 #include "Container.h"
+#include "Stubs.h"
 
 using namespace bandit;
 using namespace FurryBuilder::FactorIt;
@@ -21,27 +22,28 @@ go_bandit([]()
 			AssertThrows(std::runtime_error, _container->Resolve<int>());
 		});
 
-		//it("can pospone things to be executed later", [&]()
-		//{
-		//	_container.PostponeWeak("", [](const Contracts::ContractStrong<void>& c)
-		//	{
-		//		// Fails the test if this is executed
-		//		AssertThat(true, Equals(false));
-		//	});
-		//});
+		it("can pospone actions to be executed later", [&]()
+		{
+			_container->Postpone<Stubs::IStubService>([](Contracts::ContractStrong<Stubs::IStubService>::type c)
+			{
+				// Fails the test if this is executed
+				AssertThat(true, Equals(false));
+			});
+		});
 
-		//it("can pospone things more than once to be executed later", [&]()
-		//{
-		//	_container.PostponeWeak("", [](const Contracts::ContractStrong<void>& c)
-		//	{
-		//		// Fails the test if this is executed
-		//		AssertThat(true, Equals(false));
-		//	});
-		//	_container.PostponeWeak("", [](const Contracts::ContractStrong<void>& c)
-		//	{
-		//		// Fails the test if this is executed
-		//		AssertThat(true, Equals(false));
-		//	});
-		//});
+		it("can pospone actions more than once to be executed later", [&]()
+		{
+			_container->Postpone<Stubs::IStubService>([](Contracts::ContractStrong<Stubs::IStubService>::type c)
+			{
+				// Fails the test if this is executed
+				AssertThat(true, Equals(false));
+			});
+
+			_container->Postpone<Stubs::IStubService>([](Contracts::ContractStrong<Stubs::IStubService>::type c)
+			{
+				// Fails the test if this is executed
+				AssertThat(true, Equals(false));
+			});
+		});
 	});
 });
