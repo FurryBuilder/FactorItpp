@@ -19,7 +19,7 @@ Feature Compatibility List
 | Templated/Generic resolving  | &#x2713; | &#x2713; |
 | Service keys                 | &#x2713; | &#x2713; |
 | Decorators                   | &#x2713; |          |
-| Notifications                | &#x2713; |          |
+| Notifications                | &#x2713; | &#x2713; |
 | Child containers             | &#x2713; |          |
 | Resolving scope              | &#x2713; |          |
 | Auto cleanup                 | &#x2713; |    1     |
@@ -41,7 +41,9 @@ Then, you can simply bind any interface to a factory using the `Bind/To` fluent 
 ```cpp
 container
     ->Bind<IService>()
-    ->To([](IServiceLocator* l) { return std::make_shared<ConcreteService>(); });
+    ->To([](IServiceLocator* l) {
+        return std::make_shared<ConcreteService>();
+    });
 ```
 
 Since this is a little long to write, we also provide you with a really simple shortcuts for services that have a default constructor.
@@ -59,7 +61,17 @@ If you need to pass the container around, you can either use the `IBindingRoot` 
 To extract a dependency from the container, you can simply use the `Resolve` method. On the first call, this will create an instance of the bound type using the provided factory. Subsequent calls will resolve to the same instance. Resolving is a thread safe operation.
 
 ```cpp
-auto aConcreteService = container->Resolve<IService>();
+auto aConcreteService = container
+    ->Resolve<IService>();
+```
+
+If the service might not yet be registered in the container, you can use the `ResolveOrDefault` method that will ensure that a customizable default value is returned.
+
+```cpp
+auto aConcreteService = container
+    ->ResolveOrDefault<IService>([]() {
+        return std::shared_ptr<IService>(nullptr);
+    });
 ```
 
 Advanced Scenarios
@@ -82,7 +94,9 @@ You can also provide a default instance, when no key is provided, or an alias by
 ```cpp
 container
     ->Bind<scheduler_interface>()
-    ->To([](IServiceLocator* l) { return l->Resolve<scheduler_interface>("background") });
+    ->To([](IServiceLocator* l) {
+        return l->Resolve<scheduler_interface>("background")
+    });
 ```
 
 ### Unbinding
@@ -91,6 +105,16 @@ In some rare cases, you will want to remove a specific service from the containe
 ```cpp
 container
     ->Unbind<scheduler_interface>("background");
+```
+
+### Notifications
+Sometimes, you will also need to schedule operations to be executed when a specific contract is registered. This could be useful if you insert plugins dynamically into the container or if you simply need to notify your log manager that a new logging destination has been registered. This can be done using the `Postpone` method.
+
+```cpp
+container
+    ->Postpone<ILogDestination>([](std::shared_ptr<ILogDestination> dest) {
+        LogManager.Add(dest);
+    });
 ```
 
 [teamcity-status]: http://teamcity.furrybuilder.com/app/rest/builds/buildType:(id:FurryBuilder_FactorItpp_Dev)/statusIcon

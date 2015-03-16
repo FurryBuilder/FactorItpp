@@ -44,7 +44,7 @@ void Container::SetOnRegister(std::unique_ptr<Contracts::IBindingToWeak>& bindin
 	bindingTo->SetOnRegister(std::bind(&Container::Register, this, key, _1));
 }
 
-bool Container::CanResolveWeak(std::string const& key)
+bool Container::CanResolveWeak(const std::string& key)
 {
 	return _contracts.find(key) != _contracts.end();
 }
@@ -61,7 +61,7 @@ Contracts::ContractWeak::type Container::ResolveWeak(const std::string& key)
 	return pos->second->GetValue();
 }
 
-Contracts::ContractWeak::type Container::ResolveOrDefaultWeak(std::string const& key, std::function<Contracts::ContractWeak::type()> defaultValue)
+Contracts::ContractWeak::type Container::ResolveOrDefaultWeak(const std::string& key, std::function<Contracts::ContractWeak::type()> defaultValue)
 {
 	auto pos = _contracts.find(key);
 
@@ -76,6 +76,19 @@ Contracts::ContractWeak::type Container::ResolveOrDefaultWeak(std::string const&
 	}
 
 	return pos->second->GetValue();
+}
+
+void Container::PostponeWeak(const std::string& key, std::function<void(Contracts::ContractWeak::type)> callback)
+{
+	auto pos = _contracts.find(key);
+
+	if (pos != _contracts.end())
+	{
+		callback(pos->second->GetValue());
+		return;
+	}
+
+	PostponeWeakLocal(key, callback);
 }
 
 void Container::UnbindWeak(std::string const& key)
@@ -95,5 +108,39 @@ void Container::Register(const std::string& key, Contracts::FactoryWeak::type fa
 		throw std::runtime_error("Contract [" + key + "] is already registered");
 	}
 
-	_contracts.emplace(key, std::make_unique<Lazy<void>>([this, factory]() { return factory(this); }));
+	auto result = _contracts.emplace(key, std::make_unique<Lazy<void>>([this, factory]() { return factory(this); }));
+
+	TriggerPostponedLocal(key, result.first);
+}
+
+void Container::PostponeWeakLocal(const std::string& key, std::function<void(Contracts::ContractWeak::type)> callback)
+{
+	auto pos = _postponedActions.find(key);
+
+	if (pos != _postponedActions.end())
+	{
+		pos->second.push_back(callback);
+		return;
+	}
+
+	auto actions = std::vector<std::function<void(Contracts::ContractWeak::type)>>();
+
+	actions.push_back(callback);
+
+	_postponedActions.emplace(key, actions);
+}
+
+void Container::TriggerPostponedLocal(const std::string& key, const TContracts::iterator& registration)
+{
+	auto actions = _postponedActions.find(key);
+
+	if (actions == _postponedActions.end())
+	{
+		return;
+	}
+
+	for (const auto& action : actions->second)
+	{
+		action(registration->second->GetValue());
+	}
 }

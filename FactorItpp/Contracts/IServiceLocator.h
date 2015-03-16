@@ -59,6 +59,12 @@ namespace Contracts
 		/// service is not registered.
 		/// @param	key		The key used to register the contract.
 		virtual ContractWeak::type ResolveOrDefaultWeak(const std::string& key, std::function<ContractWeak::type()> defaultValue = std::function<ContractWeak::type()>()) abstract;
+
+		/// Schedule a callback to be executed one the service locator can provide
+		/// an instance of a contract matching the specified key.
+		/// @param key		The key used to register the contract.
+		/// @param callback	The method to excute once the service is available.
+		virtual void PostponeWeak(const std::string& key, std::function<void(ContractWeak::type)> callback) abstract;
 	};
 
 	/// Represent an object that can resolve services registered on a dependency
@@ -110,7 +116,7 @@ namespace Contracts
 		template<typename TContract>
 		typename ContractStrong<TContract>::type ResolveOrDefault(std::function<typename ContractStrong<TContract>::type()> defaultValue)
 		{
-			return std::static_pointer_cast<TContract>(ResolveOrDefaultWeak(BuildKey<TContract>(), std::static_pointer_cast<void>(defaultValue)));
+			return std::static_pointer_cast<TContract>(ResolveOrDefaultWeak(BuildKey<TContract>(), defaultValue));
 		}
 
 		/// Get the instance of the specified service.
@@ -119,7 +125,26 @@ namespace Contracts
 		template<typename TContract>
 		typename ContractStrong<TContract>::type ResolveOrDefault(const std::string& key, std::function<typename ContractStrong<TContract>::type()> defaultValue)
 		{
-			return std::static_pointer_cast<TContract>(ResolveOrDefaultWeak(BuildKey<TContract>(key), std::static_pointer_cast<void>(defaultValue)));
+			return std::static_pointer_cast<TContract>(ResolveOrDefaultWeak(BuildKey<TContract>(key), defaultValue));
+		}
+
+		/// Schedule a callback to be executed one the service locator can provide
+		/// an instance of a contract matching the specified key.
+		/// @param callback	The method to excute once the service is available.
+		template<typename TContract>
+		typename void Postpone(std::function<void(typename ContractStrong<TContract>::type)> callback)
+		{
+			PostponeWeak(BuildKey<TContract>(), [callback](ContractWeak::type c) { callback(std::static_pointer_cast<TContract>(c)); });
+		}
+
+		/// Schedule a callback to be executed one the service locator can provide
+		/// an instance of a contract matching the specified key.
+		/// @param key		The key used to register the contract.
+		/// @param callback	The method to excute once the service is available.
+		template<typename TContract>
+		typename void Postpone(const std::string& key, std::function<void(typename ContractStrong<TContract>::type)> callback)
+		{
+			PostponeWeak(BuildKey<TContract>(key), [callback](ContractWeak::type c) { callback(std::static_pointer_cast<TContract>(c)); });
 		}
 	};
 }

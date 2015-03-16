@@ -10,6 +10,11 @@ namespace Stubs
 		INTERFACE(IStubService)
 	};
 
+	class ILateStubService
+	{
+		INTERFACE(ILateStubService)
+	};
+
 	class StubService : public IStubService
 	{
 		DISABLE_COPY(StubService);
@@ -17,6 +22,15 @@ namespace Stubs
 	public:
 		StubService() { }
 		virtual ~StubService() { }
+	};
+
+	class LateStubService : public ILateStubService
+	{
+		DISABLE_COPY(LateStubService);
+
+	public:
+		LateStubService() { }
+		virtual ~LateStubService() { }
 	};
 }
 

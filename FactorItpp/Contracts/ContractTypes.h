@@ -64,12 +64,14 @@ namespace Contracts
 		typedef std::function<ContractWeak::type(IServiceLocator* l)> type;
 	};
 
+	/// Returns a unique string matching the fully qualified type name of the contract.
 	template<typename TContract>
 	std::string BuildKey()
 	{
 		return typeid(TContract).name();
 	}
 
+	/// Returns a unique string matching the fully qualified type name of the contract extended with a custom key.
 	template<typename TContract>
 	std::string BuildKey(const std::string& key)
 	{
